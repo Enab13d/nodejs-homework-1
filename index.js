@@ -1,23 +1,22 @@
 const { listContacts, getContactById, removeContact, addContact } = require('./contacts')
 const argv = require('yargs').argv;
 console.log('Hello World');
-function invokeAction({ action, id, name, email, phone }) {
+async function invokeAction({ action, id, name, email, phone }) {
   switch (action) {
     case 'list':
-          listContacts();
-      break;
-
+      const contacts = await listContacts();
+      return console.table(contacts);
     case 'get':
-      getContactById(id);
-      break;
+      const contact = await getContactById(id);
+      return console.table(contact);
 
     case 'add':
-          addContact(name, email, phone);
-      break;
+      const newContact = await addContact(name, email, phone);
+      return console.table(newContact);
 
     case 'remove':
-          removeContact(id);
-      break;
+      const deletedContact = await removeContact(id);
+      return console.table(deletedContact);
 
     default:
       console.warn('\x1B[31m Unknown action type!');
